@@ -84,7 +84,8 @@ const refetchUserController = async(req,res,next)=>{
     
 }
 
-module.exports= {registerController,
+module.exports= {
+    registerController,
     loginController,
     logoutController,
     refetchUserController
