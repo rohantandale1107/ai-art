@@ -168,3 +168,131 @@ export const IMAGE_GENERATOR_V3= async(promptv3)=>{
     }
   
 }
+export const IMAGE_GENERATOR_V2= async(promptv3)=>{
+
+    const currentUser = await CHECK_AUTH();
+
+    const {prompt, negativePrompt, size,n}= promptv3;
+    if(!prompt|| !negativePrompt || !size || !n){
+        return "Data is missing"
+    }
+
+    const LOWERCASE = style.toLowerCase();
+
+    const AIImage = await openai.images.generate({
+        model:"dall-e-2",
+        prompt:prompt,
+        size:size,
+        n:Number(n),
+        
+    })
+
+    const imageUrls = extractImageUrls(AIImage.data);
+
+
+    if(imageUrls.length){
+        const response = await axios({
+            method:"POST",
+            url:`/api/post/create/v2/${currentUser._id}`,
+            withCredentials:true,
+            data:{
+                prompt,
+                negativePrompt:negativePrompt,
+                size,
+                n,
+                style,
+                imageUrls: imageUrls,
+                
+            }
+        })
+        
+        if(response.status==201){
+            const response = await axios({
+                method:"PUT",
+                url:`/api/user/create/v3${currentUser._id}`,
+                withCredentials:true,
+                data:{
+                    credit:Number(currentUser?.credit)-1,
+                }
+            })
+            return response
+        }
+        
+    }
+  
+}
+export const GET_AI_IMAGES= async()=>{
+
+    const currentUser = await CHECK_AUTH();
+    const response = await axios({
+        method:"GET",
+        url:`/api/post/all`,
+    })
+    
+  
+
+    if(response.status==200){
+        return response.data.posts;
+    }
+    
+}
+export const GET_USER_AI_IMAGES= async(userId)=>{
+
+    const currentUser = await CHECK_AUTH();
+    const response = await axios({
+        method:"GET",
+        url:`/api/post/all/${userId}`,
+    })
+    
+  
+
+    if(response.status==200){
+        return response.data.posts;
+    }
+    
+}
+export const GET_SINGLE_POST= async(postId)=>{
+
+    const currentUser = await CHECK_AUTH();
+    const response = await axios({
+        method:"GET",
+        url:`/api/post/single/${postId}`,
+    })
+    
+    if(response.status==200){
+        return response.data.returnPost;
+    }
+    
+}
+export const DELETE_POST= async(postId)=>{
+
+    const currentUser = await CHECK_AUTH();
+    const response = await axios({
+        method:"DELETE",
+        url:`/api/post/delete/${postId}`,
+    })
+    
+    if(response.status==200){
+        return response;
+    }
+    
+}
+export const BUYING_CREDIT= async(CREDIT)=>{
+
+    const currentUser = await CHECK_AUTH();
+
+
+    const response = await axios({
+        method:"DELETE",
+        url:`/api/user/credit/${currentUser._id}`,
+        withCredentials:true,
+            data:{
+                credit:Number(currentUser?.credit)+Number(CREDIT),
+            }
+    })
+    
+    if(response.status==200){
+        return response;
+    }
+    
+}
