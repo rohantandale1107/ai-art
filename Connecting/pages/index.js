@@ -3,8 +3,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
-
-
 //internal import
 import {
   HomeLogo,
@@ -100,7 +98,8 @@ const index = () => {
   const CALLING_ALL_POSTS = async () => {
     try {
       const response = await GET_AI_IMAGES();
-
+      
+      
       const V2_256x256Temp = [];
       const V2_512x512Temp = [];
       const V2_1024x1024Temp = [];
@@ -118,7 +117,7 @@ const index = () => {
           } else if (el.size === "1024x1024") {
             V2_1024x1024Temp.push(el);
           }
-        } else if(el.aiModel=== "AI Image Art Dall-e-v3") {
+        } else if (el.aiModel === "AI Image Art Dall-e-v3") {
           if (el.size === "1024x1024") {
             V3_1024x1024Temp.push(el);
           } else if (el.size === "1024x1792") {
@@ -129,37 +128,70 @@ const index = () => {
         }
       });
 
-      setV2_256x256(V2_256x256Temp)
-      setV2_512x512(V2_512x512Temp)
-      setV2_1024x1024(V2_1024x1024Temp)
+      setV2_256x256(V2_256x256Temp);
+      setV2_512x512(V2_512x512Temp);
+      setV2_1024x1024(V2_1024x1024Temp);
 
-      setV3_1024x1024(V3_1024x1024Temp)
-      setV3_1024x1792(V3_1024x1792Temp)
-      setV3_1792x1024(V3_1792x1024Temp)
+      setV3_1024x1024(V3_1024x1024Temp);
+      setV3_1024x1792(V3_1024x1792Temp);
+      setV3_1792x1024(V3_1792x1024Temp);
 
-      const model = localStorage.getItem("ACTIVE_MODEL")
-      if(model==="AI Image Art Dall-e-v2"){
-        setAllAIImages(V2_256x256Temp)
-        setAllPostCopy(V2_256x256Temp)
+      const model = localStorage.getItem("ACTIVE_MODEL");
+      if (model === "AI Image Art Dall-e-v2") {
+        setAllAIImages(V2_256x256Temp);
+        setAllPostCopy(V2_256x256Temp);
       } else {
-        setAllAIImages(V3_1024x1792Temp)
-        setAllPostCopy(V3_1024x1792Temp)
+        setAllAIImages(V3_1024x1792Temp);
+        setAllPostCopy(V3_1024x1792Temp);
       }
 
       const storedCookiedValue = Cookies.get("token");
-      if(storedCookiedValue){
+      if (storedCookiedValue) {
         const user = await CHECK_AUTH();
         setActiveUser(user);
       }
 
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     CALLING_ALL_POSTS();
-  }, [])
+  }, []);
+
+  const onHandleSearch = (value) => {
+    const filterPosts = allAIImages?.filter(({ prompt }) =>
+      prompt.toLowerCase().includes(value.toLowerCase())
+    );
+    if(filterPosts.length===0){
+      setAllAIImages(allPostCopy)
+    } else{
+      setAllAIImages(filterPosts);
+    }
+  };
+
+  const onClearSearch = ()=>{
+    if(allAIImages?.length && allPostCopy?.length){
+      setAllAIImages(allPostCopy)
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(()=> setSearch(searchItem),1000)
+    return () => clearTimeout(timer)
+  }, [searchItem])
   
+  useEffect(() => {
+    if(search){
+      onHandleSearch(search)
+    } else{
+      onClearSearch()
+    }
+  
+  }, [search])
+  
+  const arrayRender = [...(allAIImages || [])].reverse();
   return <div>index</div>;
 };
 

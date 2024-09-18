@@ -38,5 +38,3 @@ typechain-types
 cache
 artifacts
 
-.env
-.env.local

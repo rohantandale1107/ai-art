@@ -91,9 +91,6 @@ export const LIKE_POST= async(postId)=>{
             userId:currentUser._id,
         }
     })
-    
-  
-
     if(response.status==200){
         return response;
     }
@@ -111,8 +108,6 @@ export const DISLIKE_POST= async(postId)=>{
         }
     })
     
-  
-
     if(response.status==200){
         return response;
     }
@@ -156,7 +151,7 @@ export const IMAGE_GENERATOR_V3= async(promptv3)=>{
         if(response.status==201){
             const response = await axios({
                 method:"PUT",
-                url:`/api/user/create/v3${currentUser._id}`,
+                url:`/api/user/create/v3/${currentUser._id}`,
                 withCredentials:true,
                 data:{
                     credit:Number(currentUser?.credit)-1,
@@ -209,7 +204,7 @@ export const IMAGE_GENERATOR_V2= async(promptv3)=>{
         if(response.status==201){
             const response = await axios({
                 method:"PUT",
-                url:`/api/user/create/v3${currentUser._id}`,
+                url:`/api/user/create/v3/${currentUser._id}`,
                 withCredentials:true,
                 data:{
                     credit:Number(currentUser?.credit)-1,
