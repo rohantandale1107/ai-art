@@ -9,6 +9,7 @@
     "lint": "next lint",
     "server": "node index.js",
     "prod": "node index.js"
+    
   },
   "dependencies": {
     "@next/font": "13.4.13",

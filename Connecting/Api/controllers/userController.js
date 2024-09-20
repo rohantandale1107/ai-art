@@ -1,5 +1,5 @@
 const User = require("../models/User")
-const {customError}= require("../middlewares/error")
+const {CustomError}= require("../middlewares/error")
 
 const getUserController= async(req,res,next)=>{
     const {userId}=req.params;
@@ -11,7 +11,7 @@ const getUserController= async(req,res,next)=>{
             throw new CustomError("No user found!",404)
         }
 
-        const{password,...date}=user;
+        const{password,...data}=user;
         res.status(200).json(data._doc);
     } catch (error) {
         next(error)
@@ -52,7 +52,7 @@ const buyCredit= async(req,res,next)=>{
 
         await userToUpdate.save();
 
-        res.status(200).json({message:"Credit updated succesfully"})
+        res.status(200).json({message:"Credit updated succesfully",user:userToUpdate})
     } catch (error) {
         next(error)
     }

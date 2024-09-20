@@ -21,7 +21,7 @@ const postSchema = new mongoose.Schema(
                 trim:true,
             },
             quality:{
-                type:Number,
+                type:String,
                 trim:true,
             },
             quantity:{

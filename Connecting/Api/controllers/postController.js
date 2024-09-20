@@ -8,7 +8,7 @@ const{CustomError}= require("../middlewares/error")
 
 const generateFileName = (userId, allPostsLength)=>{
     const date = new Date().toDateString().replace(/:/g,"-");
-    return `${userId}-${allPostLength}-${date}.png`;
+    return `${userId}-${allPostsLength}-${date}.png`;
 }
 const createPostWithImagesController_V3= async(req,res,next)=>{
     const{userId}= req.params;
@@ -57,9 +57,9 @@ res
         next(error);        
     }
 }
-const generateFileNameMultiple =(userId, ondex)=>{
+const generateFileNameMultiple =(userId, index)=>{
     const date= new Date().toDateString().replace(/:/g,"-");
-    return `${userId}-${allPostLength}-${date}.png`;
+    return `${userId}-${index}-${date}.png`;
 
     
 }
@@ -73,9 +73,9 @@ const createPostWithImagesController_V2=async(req,res,next)=>{
             throw new CustomError("User not found!",404);
         }
 
-        const downloadAndConvertImage= await Promise.all(
+        const downloadAndConvertImages= await Promise.all(
             imageUrls.map(async(imageURL,index)=>{
-                const fileName = generateFileName(userId, allPostsLength)
+                const fileName = generateFileName(userId, index)
                 const filePath= path.join(__dirname,"../..","uploads",fileName);
                 
                 const response = await axios({
@@ -90,10 +90,6 @@ const createPostWithImagesController_V2=async(req,res,next)=>{
             })
         )
         
-        
-        
-
-        
         const newPost= new Post({
             user:userId,
             aiModel:"AI Image Art Dalle-e-v2",
@@ -104,7 +100,7 @@ const createPostWithImagesController_V2=async(req,res,next)=>{
             quality:"Normal",
             quantity:n,
             style:"Normal",
-            images:downloadAndConvertImage,
+            images:downloadAndConvertImages,
             aiMage:imageUrls,
         })
 await newPost.save();
@@ -124,8 +120,6 @@ const getPostController= async(req,res,next)=>{
        const allPosts= await Post.find().populate("user","username");
        res.status(200).json({posts:allPosts});
         
-
-
     } catch (error) {
         next(error)
     }
@@ -156,7 +150,7 @@ const getUserPostController= async(req,res,next)=>{
         if(!user){
             throw new CustomError("User not found!",404);
         }
-        const userPosts = await Post.find({userId}).populate("user","username");
+        const userPosts = await Post.find({user:userId}).populate("user","username");
 
         res.status(200),json({
             posts:userPosts
@@ -178,10 +172,10 @@ const deletePostController= async(req,res,next)=>{
         }
         const user= await User.findById(postToDelete.user);
         if(!user){
-            throw new CustomError("Post not found!",404)
+            throw new CustomError("User not found!",404)
         }
         user.posts= user.posts.filter(
-            (postId)= postId.toString()!= postToDelete._id.string()
+            (postId)=> postId.toString()!== postToDelete._id.string()
         );
 
         await user.save();

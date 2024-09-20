@@ -1,4 +1,4 @@
-const express= require("express");
+const express = require("express")
 const mongoose= require("mongoose");
 const app=express();
 const dotenv= require("dotenv");
@@ -18,7 +18,7 @@ const path = require ("path")
 const {errorHandler}=require("./Api/middlewares/error")
 const verifyToken=require("./Api/middlewares/verifyToken")
 
-const port = process.env.PORT || 300;
+const port = process.env.PORT || 3000;
 
 mongoose
     .connect(process.env.MONGODB_URL)
@@ -43,3 +43,6 @@ nextServer.prepare().then(()=>{
         console.log(`App running on port ${port}`)
     });
 })
+
+
+
