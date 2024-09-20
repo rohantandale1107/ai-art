@@ -14,6 +14,12 @@
   --level-transition-duration: 0.1s;
   /* icon */
 }
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter/Inter-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 .slider {
   cursor: pointer;

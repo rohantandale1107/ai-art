@@ -12,12 +12,12 @@ function extractImageUrls(imageArray){
     return imageArray.map((image)=>image.url)
 }
 
-export const REGISTER_USER=async (signup)=>{
-    const{name,email,password,confirmpassword}=signUp;
+export const REGISTER_USER=async (signUp)=>{
+    const{name,email,password,confirmPassword}=signUp;
     if(!name || !email|| !password ||!confirmPassword)
         return "Data is missing"
 
-    if(password !=confirmpassword)
+    if(password !=confirmPassword)
         return "Password is not matching"
 
     const response = await axios({
@@ -37,8 +37,8 @@ export const REGISTER_USER=async (signup)=>{
     }
 }
 export const LOGIN_USER= async(login)=>{
-    const{email,password}=signUp;
-   if( !email|| !password )
+    const{email,password}=login;
+   if( !email|| !password || !confirmPassword)
         return "Data is missing"
 
 const response = await axios({
@@ -55,7 +55,8 @@ if(response.status==200){
     window.location.href="/";
 }
 }
-export const LOGOUT_USER= async()=>{
+
+export const LOGOUT= async()=>{
 const response = await axios({
     method:"GET",
     url:"/api/auth/logout",
@@ -151,7 +152,7 @@ export const IMAGE_GENERATOR_V3= async(promptv3)=>{
         if(response.status==201){
             const response = await axios({
                 method:"PUT",
-                url:`/api/user/create/v3/${currentUser._id}`,
+                url:`/api/user/credit/${currentUser._id}`,
                 withCredentials:true,
                 data:{
                     credit:Number(currentUser?.credit)-1,
@@ -218,14 +219,11 @@ export const IMAGE_GENERATOR_V2= async(promptv3)=>{
 }
 export const GET_AI_IMAGES= async()=>{
 
-    const currentUser = await CHECK_AUTH();
+    
     const response = await axios({
         method:"GET",
         url:`/api/post/all`,
     })
-    
-  
-
     if(response.status==200){
         return response.data.posts;
     }
@@ -233,7 +231,7 @@ export const GET_AI_IMAGES= async()=>{
 }
 export const GET_USER_AI_IMAGES= async(userId)=>{
 
-    const currentUser = await CHECK_AUTH();
+    
     const response = await axios({
         method:"GET",
         url:`/api/post/all/${userId}`,
@@ -248,7 +246,7 @@ export const GET_USER_AI_IMAGES= async(userId)=>{
 }
 export const GET_SINGLE_POST= async(postId)=>{
 
-    const currentUser = await CHECK_AUTH();
+    
     const response = await axios({
         method:"GET",
         url:`/api/post/single/${postId}`,
@@ -261,7 +259,7 @@ export const GET_SINGLE_POST= async(postId)=>{
 }
 export const DELETE_POST= async(postId)=>{
 
-    const currentUser = await CHECK_AUTH();
+    
     const response = await axios({
         method:"DELETE",
         url:`/api/post/delete/${postId}`,
@@ -275,8 +273,6 @@ export const DELETE_POST= async(postId)=>{
 export const BUYING_CREDIT= async(CREDIT)=>{
 
     const currentUser = await CHECK_AUTH();
-
-
     const response = await axios({
         method:"DELETE",
         url:`/api/user/credit/${currentUser._id}`,
