@@ -224,7 +224,7 @@ const index = () => {
 
                   <button
                     type="button"
-                    className="text-base absolute right-2 hover:bg-zinc-800 h-8 w-8 flex tiems-center justify-center rounded-full"
+                    className="text-base absolute right-2 hover:bg-zinc-800 h-8 w-8 flex items-center justify-center rounded-full"
                   >
                     <Image />
                   </button>
@@ -247,8 +247,9 @@ const index = () => {
               style={{
                 position: "relative",
               }}
-            >
+            />
               {openFilter && <Notic />}
+              
               <div className="mb-8 flex flex-col items-center">
                 <div className="flex space-x-2">
                   <button className="w-32 sm:w-36 flex items-center text-xs justify-center text-center h-9 rounded-full hover:brightness-110 bg-opacity-0 shadow-sm mt-4 bg-gradient-to-t from-indigo-900 via-indigo-900 to-indigo-800">
@@ -309,7 +310,7 @@ const index = () => {
                   </>
                 </div>
               </div>
-            </div>
+            
           </div>
         </div>
       </div>

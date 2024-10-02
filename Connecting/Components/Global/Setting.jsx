@@ -1,7 +1,12 @@
 import React from "react";
 
-const Setting = () => {
-  return <div>Setting</div>;
+import {LOGOUT} from "../../Utils/index"
+import { IoLogInOutline } from "../SVG/index";
+
+const Setting = ({activeUser}) => {
+  return <div>
+    
+  </div>;
 };
 
 export default Setting;
