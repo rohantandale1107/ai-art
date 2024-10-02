@@ -11,7 +11,7 @@ import {
   Filter,
   FaHeart,
   FaInstagram,
-  AiOutLineYoutube,
+  AiOutlineYoutube,
   BsCameraReelsFill,
   FaRegHeart,
   Magic,
@@ -27,6 +27,7 @@ import {
   Button,
   PaymentProcessing,
 } from "../Components/index";
+
 
 import { GET_AI_IMAGES, CHECK_AUTH } from "../Utils/index";
 
@@ -270,7 +271,7 @@ const index = () => {
                   category={category}
                 />
                 <Button
-                  icon={<AiOutLineYoutube />}
+                  icon={<AiOutlineYoutube />}
                   name={"Youtube"}
                   handleClick={() => changeCategory("Youtube")}
                   category={category}

@@ -29,6 +29,7 @@ const GetStarted = ({ activeUser }) => {
           >
             G
           </button>
+          {openSetting && <Setting activeUser={activeUser}/>}
         </div>
       ) : (
         <div className="sm:hidden absolute w-full flex items-center justify-end top-2 right-2">
