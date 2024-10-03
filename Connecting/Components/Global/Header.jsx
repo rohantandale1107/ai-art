@@ -44,7 +44,8 @@ const Header = () => {
   const CALL_USER_DETAILS = async () => {
     try {
       const user = await CHECK_AUTH();
-      console.log(user.credit);
+      console.log("Active User: ", user);
+
       setActiveUser(user);
     } catch (error) {
       console.log(error);

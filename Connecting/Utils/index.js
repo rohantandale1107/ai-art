@@ -20,6 +20,8 @@ export const REGISTER_USER=async (signUp)=>{
     if(password !=confirmPassword)
         return "Password is not matching"
 
+    console.log(name,email,password,confirmPassword);
+
     const response = await axios({
         method:"POST",
         url:"/api/auth/register",
@@ -31,6 +33,8 @@ export const REGISTER_USER=async (signUp)=>{
             confirmPassword:confirmPassword,
         }
     })
+    console.log(response);
+    
 
     if(response.status==200){
         window.location.href="/";
@@ -41,15 +45,16 @@ export const LOGIN_USER= async(login)=>{
    if( !email|| !password )
         return "Data is missing"
 
-const response = await axios({
-    method:"POST",
-    url:"/api/auth/login",
-    withCredentials:true,
-    data:{
-        email:email,
-        password:password,
-    }
-})
+
+    const response = await axios({
+        method:"POST",
+        url:"/api/auth/login",
+        withCredentials:true,
+        data:{
+            email:email,
+            password:password,
+        }
+    })
 
 if(response.status==200){
     window.location.href="/";
